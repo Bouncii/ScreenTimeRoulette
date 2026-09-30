@@ -1,4 +1,4 @@
-package fr.bounci.screentimeroulette
+package fr.bounci.screentimeroulette.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
