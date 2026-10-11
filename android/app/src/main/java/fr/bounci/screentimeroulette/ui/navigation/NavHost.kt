@@ -10,7 +10,7 @@ import fr.bounci.screentimeroulette.ui.feature.join.JoinScreen
 import fr.bounci.screentimeroulette.ui.feature.lobby.LobbyScreen
 
 @Composable
-fun AppNavHost() {
+fun NavHost() {
     val backStack = rememberNavBackStack(Destination.Home)
 
     NavDisplay(
