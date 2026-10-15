@@ -51,7 +51,6 @@ fun HomeScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxSize() ,
         ) {
             // Modifier png si ajout de theme light

@@ -34,7 +34,8 @@ fun NavHost() {
                 JoinScreen(
                     onJoinRoomSuccess = { code ->
                         backStack.add(Destination.Lobby(code))
-                    }
+                    },
+                    "Luluvroumette"
                 )
             }
 

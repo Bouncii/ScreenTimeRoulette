@@ -22,14 +22,14 @@ val Typography = Typography(
     displaySmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 36.sp, lineHeight = 44.sp),
 
 
-    headlineLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 32.sp, lineHeight = 40.sp),
-    headlineMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 28.sp, lineHeight = 36.sp),
+    headlineLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 70.sp, lineHeight = 55.sp),
+    headlineMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 50.sp, lineHeight = 40.sp),
     headlineSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 24.sp, lineHeight = 32.sp),
 
 
-    titleLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 22.sp, lineHeight = 28.sp),
-    titleMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 18.sp, lineHeight = 24.sp),
-    titleSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 14.sp, lineHeight = 20.sp),
+    titleLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 30.sp),
+    titleMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 30.sp),
+    titleSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 60.sp, lineHeight = 30.sp),
 
 
     bodyLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 24.sp),
