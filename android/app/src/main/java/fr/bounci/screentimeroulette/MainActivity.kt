@@ -1,4 +1,4 @@
-package fr.bounci.screentimeroulette.ui
+package fr.bounci.screentimeroulette
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import fr.bounci.screentimeroulette.ui.navigation.NavHost
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +27,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavHost()
+                    val currentDensity = LocalDensity.current
+                    val fixedDensity = Density(
+                        density = currentDensity.density,
+                        fontScale = 1.0f
+                    )
+
+                    CompositionLocalProvider(LocalDensity provides fixedDensity) {
+                        NavHost()
+                    }
                 }
             }
         }

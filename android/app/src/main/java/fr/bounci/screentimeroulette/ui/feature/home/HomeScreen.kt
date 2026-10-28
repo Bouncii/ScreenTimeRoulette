@@ -1,4 +1,5 @@
 package fr.bounci.screentimeroulette.ui.feature.home
+import android.content.res.Configuration
 import fr.bounci.screentimeroulette.R
 
 import androidx.compose.foundation.Image
@@ -18,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,15 +35,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
 @Composable
 fun HomeScreen(
-    onCreateClick: () -> Unit,
-    onJoinClick: () -> Unit
+    onCreateClick: (String) -> Unit,
+    onJoinClick: (String) -> Unit
 ) {
-    var pseudo by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -80,8 +84,8 @@ fun HomeScreen(
                             .fillMaxWidth()
                     ){
                         TextField(
-                            value = pseudo,
-                            onValueChange = { pseudo = it },
+                            value = username,
+                            onValueChange = { username = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 56.dp)
@@ -123,7 +127,7 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Button(
-                                onClick = onCreateClick,
+                                onClick = {onCreateClick(username)},
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(70.dp)
@@ -143,12 +147,13 @@ fun HomeScreen(
                                 Text(
                                     text = "+ Create",
                                     style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    softWrap = false
                                 )
                             }
 
                             Button(
-                                onClick = onJoinClick,
+                                onClick = {onJoinClick(username)},
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(70.dp)
@@ -168,7 +173,8 @@ fun HomeScreen(
                                 Text(
                                     text = "+ Join",
                                     style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    softWrap = false
                                 )
                             }
                         }
@@ -209,6 +215,24 @@ fun HomeScreen(
                     }
                 }
             }
+        }
+    }
+}
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun HomeScreenPreview() {
+    ScreenTimeRouletteTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            HomeScreen(
+                onCreateClick = {},
+                onJoinClick = {}
+            )
         }
     }
 }

@@ -1,6 +1,8 @@
 package fr.bounci.screentimeroulette.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -8,11 +10,15 @@ import fr.bounci.screentimeroulette.ui.feature.game.GameScreen
 import fr.bounci.screentimeroulette.ui.feature.home.HomeScreen
 import fr.bounci.screentimeroulette.ui.feature.join.JoinScreen
 import fr.bounci.screentimeroulette.ui.feature.lobby.LobbyScreen
+import fr.bounci.screentimeroulette.ui.session.GameViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun NavHost() {
+fun NavHost(
+    gameViewModel: GameViewModel = viewModel()
+) {
     val backStack = rememberNavBackStack(Destination.Home)
-
+    val username by gameViewModel.username.collectAsState()
     NavDisplay(
         backStack = backStack,
         entryProvider = entryProvider {
@@ -20,10 +26,12 @@ fun NavHost() {
             // Home
             entry<Destination.Home> {
                 HomeScreen(
-                    onCreateClick = {
+                    onCreateClick = { username ->
+                        gameViewModel.updateUsername(username)
                         backStack.add(Destination.Lobby("ABCD"))
                     },
-                    onJoinClick = {
+                    onJoinClick = { username ->
+                        gameViewModel.updateUsername(username)
                         backStack.add(Destination.Join)
                     }
                 )
@@ -32,10 +40,14 @@ fun NavHost() {
             // Join
             entry<Destination.Join> {
                 JoinScreen(
+                    username = username,
                     onJoinRoomSuccess = { code ->
+                        gameViewModel.updateRoomCode(code)
                         backStack.add(Destination.Lobby(code))
                     },
-                    "Luluvroumette"
+                    onBackClick = {
+                        backStack.removeLastOrNull()
+                    }
                 )
             }
 
