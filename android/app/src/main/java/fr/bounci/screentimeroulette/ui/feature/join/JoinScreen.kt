@@ -104,6 +104,7 @@ fun JoinScreen(
                     text = username,
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
+                    softWrap = false
                 )
                 Row(
                     modifier = Modifier
@@ -134,11 +135,11 @@ fun JoinScreen(
                             Text(
                                 text = "Room Id...",
                                 color = MaterialTheme.colorScheme.background,
-                                style = MaterialTheme.typography.labelMedium,
+                                style = MaterialTheme.typography.labelSmall,
                             )
                         },
                         modifier = Modifier.weight(1f),
-                        textStyle = MaterialTheme.typography.labelMedium,
+                        textStyle = MaterialTheme.typography.labelSmall,
                         singleLine = true,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -199,7 +200,7 @@ fun JoinScreen(
                     ) {
                         Text(
                             text = "Scan QR",
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                             softWrap = false
                         )

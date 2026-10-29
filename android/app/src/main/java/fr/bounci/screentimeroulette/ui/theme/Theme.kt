@@ -1,6 +1,5 @@
 package fr.bounci.screentimeroulette.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,7 @@ private val DarkColorScheme = darkColorScheme(
     onError = Color.White,
     background = Background500,
     onBackground = Color.White,
-    surface = Background800,
+    surface = Background700,
     onSurface = Color.White
 )
 

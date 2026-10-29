@@ -27,17 +27,17 @@ val Typography = Typography(
     headlineSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 24.sp, lineHeight = 32.sp),
 
 
-    titleLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 30.sp),
-    titleMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 30.sp),
-    titleSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 60.sp, lineHeight = 30.sp),
+    titleLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 0.sp, lineHeight = 30.sp),
+    titleMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 40.sp),
+    titleSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 0.sp, lineHeight = 30.sp),
 
 
     bodyLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 16.sp, lineHeight = 24.sp),
-    bodyMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 14.sp, lineHeight = 20.sp),
+    bodyMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 20.sp, lineHeight = 20.sp),
     bodySmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 12.sp, lineHeight = 16.sp),
 
 
-    labelLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 25.sp),
-    labelMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 30.sp, lineHeight = 25.sp),
-    labelSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 11.sp, lineHeight = 16.sp)
+    labelLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 75.sp, lineHeight = 25.sp),
+    labelMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 25.sp),
+    labelSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 30.sp, lineHeight = 16.sp)
 )

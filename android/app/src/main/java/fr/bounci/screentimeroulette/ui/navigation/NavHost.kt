@@ -28,7 +28,7 @@ fun NavHost(
                 HomeScreen(
                     onCreateClick = { username ->
                         gameViewModel.updateUsername(username)
-                        backStack.add(Destination.Lobby("ABCD"))
+                        backStack.add(Destination.Lobby("000000"))
                     },
                     onJoinClick = { username ->
                         gameViewModel.updateUsername(username)
@@ -57,7 +57,8 @@ fun NavHost(
                     roomCode = destination.roomCode,
                     onGameStart = {
                         backStack.add(Destination.Game(destination.roomCode))
-                    }
+                    },
+                    onBackClick = {}
                 )
             }
 

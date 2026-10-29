@@ -103,10 +103,10 @@ fun HomeScreen(
                                 Text(
                                     text = "Username...",
                                     color = MaterialTheme.colorScheme.background,
-                                    style = MaterialTheme.typography.labelMedium,
+                                    style = MaterialTheme.typography.labelSmall,
                                 )
                             },
-                            textStyle = MaterialTheme.typography.labelMedium,
+                            textStyle = MaterialTheme.typography.labelSmall,
                             singleLine = true,
                             shape = RoundedCornerShape(50.dp),
                             colors = TextFieldDefaults.colors(
@@ -146,7 +146,7 @@ fun HomeScreen(
                             ) {
                                 Text(
                                     text = "+ Create",
-                                    style = MaterialTheme.typography.labelMedium,
+                                    style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     softWrap = false
                                 )
@@ -172,7 +172,7 @@ fun HomeScreen(
                             ) {
                                 Text(
                                     text = "+ Join",
-                                    style = MaterialTheme.typography.labelMedium,
+                                    style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     softWrap = false
                                 )
