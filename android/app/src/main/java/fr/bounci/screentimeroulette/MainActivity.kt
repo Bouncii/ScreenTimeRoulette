@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import fr.bounci.screentimeroulette.remote.ApiSocket
 import fr.bounci.screentimeroulette.ui.navigation.NavHost
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
@@ -20,6 +21,7 @@ import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ApiSocket.connect()
         enableEdgeToEdge()
         setContent {
             ScreenTimeRouletteTheme {
