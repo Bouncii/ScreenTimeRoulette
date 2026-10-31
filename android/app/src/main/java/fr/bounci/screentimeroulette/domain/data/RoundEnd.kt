@@ -4,6 +4,6 @@ data class RoundEnd(
     val roundNumber: Int,
     val totalRounds: Int,
     val mysteryPlayer: PlayerToVote,
-    val votes: Map<String, VoteResult>,
+    val guesses: Map<String, VoteResult>,
     val leaderboard: List<Player>
 )
