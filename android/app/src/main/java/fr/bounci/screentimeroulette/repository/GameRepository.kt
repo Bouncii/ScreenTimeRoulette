@@ -12,6 +12,7 @@ import fr.bounci.screentimeroulette.remote.RemoteGameEndData
 import fr.bounci.screentimeroulette.remote.RemoteGuessPayload
 import fr.bounci.screentimeroulette.remote.RemoteJoinRoomPayload
 import fr.bounci.screentimeroulette.remote.RemotePlayer
+import fr.bounci.screentimeroulette.remote.RemotePlayerJoinedData
 import fr.bounci.screentimeroulette.remote.RemoteRoundData
 import fr.bounci.screentimeroulette.remote.RemoteRoundEndData
 import fr.bounci.screentimeroulette.remote.RemoteSocketResponse
@@ -57,8 +58,8 @@ object GameRepository {
         socket.on("playerJoined") { args ->
             val jsonString = args.firstOrNull()?.toString() ?: return@on
             try {
-                val remotePlayers = jsonParser.decodeFromString<List<RemotePlayer>>(jsonString)
-                players.value = remotePlayers.map { it.parse() }
+                val remoteData = jsonParser.decodeFromString<RemotePlayerJoinedData>(jsonString)
+                players.value = remoteData.players.map { it.parse() }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -17,7 +17,13 @@ data class RemoteAppUsageData(
 ) {
     fun parse() = AppUsage(name, timeInMinutes, opens)
 }
-
+@Serializable
+data class RemotePlayerJoinedData(
+    val roomId: String,
+    val hostId: String,
+    val joinedPlayer: RemotePlayer,
+    val players: List<RemotePlayer>
+)
 @Serializable
 data class RemotePlayer(
     val id: String,
