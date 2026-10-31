@@ -12,6 +12,8 @@ import fr.bounci.screentimeroulette.ui.feature.join.JoinScreen
 import fr.bounci.screentimeroulette.ui.feature.lobby.LobbyScreen
 import fr.bounci.screentimeroulette.ui.session.GameViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import fr.bounci.screentimeroulette.domain.data.AppUsage
+import fr.bounci.screentimeroulette.domain.usecase.CreateRoom
 
 @Composable
 fun NavHost(
@@ -28,7 +30,12 @@ fun NavHost(
                 HomeScreen(
                     onCreateClick = { username ->
                         gameViewModel.updateUsername(username)
-                        backStack.add(Destination.Lobby("000000"))
+                        CreateRoom(username, listOf(
+                            AppUsage(name = "Instagram", timeInMinutes = 120, opens = 45),
+                            AppUsage(name = "TikTok", timeInMinutes = 90, opens = 30),
+                            AppUsage(name = "YouTube", timeInMinutes = 60, opens = 15)
+                        ),  { code -> backStack.add(Destination.Lobby(code)) }, {})
+                        //backStack.add(Destination.Lobby("000000"))
                     },
                     onJoinClick = { username ->
                         gameViewModel.updateUsername(username)

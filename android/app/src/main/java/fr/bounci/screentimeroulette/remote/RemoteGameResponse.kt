@@ -96,6 +96,11 @@ data class RemoteGameEndData(
 }
 
 @Serializable
+data class RemoteCreateRoomPayload(
+    val pseudo: String,
+    val screenData: List<RemoteAppUsageData>
+)
+@Serializable
 data class RemoteJoinRoomPayload(
     val roomCode: String,
     val pseudo: String,

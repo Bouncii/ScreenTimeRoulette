@@ -7,6 +7,7 @@ import fr.bounci.screentimeroulette.domain.data.Round
 import fr.bounci.screentimeroulette.domain.data.RoundEnd
 import fr.bounci.screentimeroulette.remote.ApiSocket
 import fr.bounci.screentimeroulette.remote.RemoteAppUsageData
+import fr.bounci.screentimeroulette.remote.RemoteCreateRoomPayload
 import fr.bounci.screentimeroulette.remote.RemoteGameEndData
 import fr.bounci.screentimeroulette.remote.RemoteGuessPayload
 import fr.bounci.screentimeroulette.remote.RemoteJoinRoomPayload
@@ -41,6 +42,7 @@ object GameRepository {
     fun getRoundResult(): StateFlow<RoundEnd?> = roundResult.asStateFlow()
     fun getRoundEnd(): StateFlow<List<Player>?> = roundEnd.asStateFlow()
     fun getGameEnd(): StateFlow<GameEnd?> = gameEnd.asStateFlow()
+
     fun getGameStartedEvent(): SharedFlow<Unit> = gameStartedEvent.asSharedFlow()
 
     fun registerListeners() {
@@ -99,11 +101,37 @@ object GameRepository {
         }
     }
 
+    fun createRoom(
+        pseudo: String,
+        screenData: List<AppUsage>,
+        onSuccess: (String) -> Unit,
+        onError: () -> Unit
+    ) {
+        val socket = ApiSocket.getSocket()!!
+
+        val remoteScreenData = screenData.map {
+            RemoteAppUsageData(it.name, it.timeInMinutes, it.opens)
+        }
+
+        val payload = RemoteCreateRoomPayload(pseudo, remoteScreenData)
+        val jsonString = jsonParser.encodeToString(payload)
+
+        socket.emit("createRoom", JSONObject(jsonString), Ack { args ->
+            val responseStr = args.firstOrNull()?.toString() ?: return@Ack onError()
+            val response = jsonParser.decodeFromString<RemoteSocketResponse>(responseStr)
+            if (response.success && response.roomCode != null) {
+                onSuccess(response.roomCode)
+            } else {
+                onError()
+            }
+        })
+    }
+
     fun joinRoom(
         roomCode: String,
         pseudo: String,
         screenData: List<AppUsage>,
-        onSuccess: (String) -> Unit,
+        onSuccess: () -> Unit,
         onError: () -> Unit
     ) {
         val socket = ApiSocket.getSocket()!!
@@ -118,8 +146,8 @@ object GameRepository {
         socket.emit("joinRoom", JSONObject(jsonString), Ack { args ->
             val responseStr = args.firstOrNull()?.toString() ?: return@Ack onError()
             val response = jsonParser.decodeFromString<RemoteSocketResponse>(responseStr)
-            if (response.success && response.roomCode != null) {
-                onSuccess(response.roomCode)
+            if (response.success) {
+                onSuccess()
             } else {
                 onError()
             }
