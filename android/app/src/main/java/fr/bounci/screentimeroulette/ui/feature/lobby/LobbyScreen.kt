@@ -38,12 +38,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import fr.bounci.screentimeroulette.R
+import fr.bounci.screentimeroulette.domain.data.Player
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
 @Composable
 fun LobbyScreen(
     roomCode: String,
-    players: List<String> = emptyList(),
+    players: List<Player> = emptyList(),
     isHost: Boolean = true,
     onGameStart: () -> Unit,
     onBackClick: () -> Unit,
@@ -210,9 +211,13 @@ fun LobbyScreen(
                 ) {
                     items(players) { player ->
                         Text(
-                            text = player,
+                            text = player.pseudo,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
+                            color = if (player.isDisconnected) {
+                                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+                            } else {
+                                MaterialTheme.colorScheme.onBackground
+                            },
                             textAlign = TextAlign.Start
                         )
                     }
@@ -279,7 +284,7 @@ fun LobbyScreen(
 @Preview(
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    name = "Lobby Host View"
+    name = "Lobby Host Preview"
 )
 @Composable
 fun LobbyScreenPreview() {
@@ -290,8 +295,14 @@ fun LobbyScreenPreview() {
         ) {
             LobbyScreen(
                 roomCode = "584325",
-                players = listOf("Luluvroumette", "Th3_Warrior", "Synnfall", "Lasnelus", "Sipera"),
-                isHost = false,
+                players = listOf(
+                    Player("1", "Luluvroumette", isHost = true),
+                    Player("2", "Th3_Warrior"),
+                    Player("3", "Synnfall"),
+                    Player("4", "Lasnelus"),
+                    Player("5", "Sipera", isDisconnected = true)
+                ),
+                isHost = true,
                 onGameStart = {},
                 onBackClick = {}
             )

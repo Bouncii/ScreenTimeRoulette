@@ -1,21 +1,134 @@
 package fr.bounci.screentimeroulette.ui.session
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import fr.bounci.screentimeroulette.domain.data.AppUsage
+import fr.bounci.screentimeroulette.domain.usecase.CreateRoom
+import fr.bounci.screentimeroulette.domain.usecase.JoinRoom
+import fr.bounci.screentimeroulette.repository.GameRepository
+import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
+import fr.bounci.screentimeroulette.ui.feature.game.GameUiState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class GameViewModel : ViewModel() {
-    private val _username = MutableStateFlow("")
-    val username = _username.asStateFlow()
 
-    private val _roomCode = MutableStateFlow("")
-    val roomCode = _roomCode.asStateFlow()
+    private val _uiState = MutableStateFlow(GameUiState())
+    val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
-    fun updateUsername(name: String) {
-        _username.value = name
+    init {
+        GameRepository.registerListeners()
+        observeRepository()
     }
 
-    fun updateRoomCode(code: String) {
-        _roomCode.value = code
+    fun updateUsername(name: String) {
+        _uiState.update { it.copy(username = name) }
+    }
+
+    fun createRoom(screenData: List<AppUsage>, onSuccess: (String) -> Unit) {
+        val currentName = _uiState.value.username
+        CreateRoom(
+            pseudo = currentName,
+            screenData = screenData,
+            onSuccess = { code ->
+                _uiState.update { it.copy(roomCode = code, isHost = true) }
+                onSuccess(code)
+            },
+            onError = {}
+        )
+    }
+
+    fun joinRoom(code: String, screenData: List<AppUsage>, onSuccess: () -> Unit) {
+        val currentName = _uiState.value.username
+        JoinRoom(
+            roomCode = code,
+            pseudo = currentName,
+            screenData = screenData,
+            onSuccess = {
+                _uiState.update { it.copy(roomCode = code, isHost = false) }
+                onSuccess()
+            },
+            onError = {}
+        )
+    }
+
+    fun submitGuess(candidateId: String) {
+        if (_uiState.value.hasVoted) return
+
+        GameRepository.submitGuess(
+            guessedPlayerId = candidateId,
+            onSuccess = { _uiState.update { it.copy(hasVoted = true) } },
+            onError = {}
+        )
+    }
+
+    fun launchGame() {
+        GameRepository.startGame(
+            onSuccess = {},
+            onError = {}
+        )
+    }
+
+    private fun observeRepository() {
+        viewModelScope.launch {
+            GameRepository.getPlayers().collect { newPlayers ->
+                _uiState.update { it.copy(players = newPlayers) }
+            }
+        }
+
+
+        viewModelScope.launch {
+            GameRepository.getCurrentRound().collect { round ->
+                if (round != null) {
+                    _uiState.update {
+                        it.copy(
+                            currentPhase = GamePhase.GUESSING,
+                            roundNumber = round.roundNumber,
+                            totalRounds = round.totalRounds,
+                            mysteryApp = round.screenData.firstOrNull(),
+                            candidates = round.candidates,
+                            timeRemaining = round.duration,
+                            hasVoted = false
+                        )
+                    }
+                }
+            }
+        }
+
+
+        viewModelScope.launch {
+            GameRepository.getRoundResult().collect { result ->
+                if (result != null) {
+                    _uiState.update {
+                        it.copy(
+                            currentPhase = GamePhase.ROUND_LEADERBOARD,
+                            lastRoundResult = result
+                        )
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            GameRepository.getGameEnd().collect { gameEnd ->
+                if (gameEnd != null) {
+                    _uiState.update {
+                        it.copy(
+                            currentPhase = GamePhase.FINAL_PODIUM,
+                            finalGameResult = gameEnd
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun resetState() {
+        _uiState.update { currentState ->
+            GameUiState(username = currentState.username)
+        }
     }
 }
