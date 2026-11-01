@@ -34,7 +34,7 @@ object GameRepository {
     private val roundResult = MutableStateFlow<RoundEnd?>(null)
     private val roundEnd = MutableStateFlow<List<Player>?>(null)
     private val gameEnd = MutableStateFlow<GameEnd?>(null)
-    private val gameStartedEvent = MutableSharedFlow<Unit>()
+    private val gameStartedEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
     fun getSocketState(): StateFlow<SocketState> = ApiSocket.getSocketState()
 

@@ -69,13 +69,21 @@ fun NavHost(
 
             // Lobby
             entry<Destination.Lobby> { destination ->
+
+                androidx.compose.runtime.LaunchedEffect(destination.roomCode) {
+                    gameViewModel.gameStartedEvent.collect {
+                        // Si on reçois le signal gameStarted on change d'entry
+                        backStack.add(Destination.Game(destination.roomCode))
+                    }
+                }
+
                 LobbyScreen(
                     roomCode = uiState.roomCode,
                     players = uiState.players,
                     isHost = uiState.isHost,
                     onGameStart = {
                         gameViewModel.launchGame()
-                        backStack.add(Destination.Game(destination.roomCode))
+                        //backStack.add(Destination.Game(destination.roomCode))
                     },
                     onBackClick = {
                         // TODO: ajouter leaveroom avec le viewmodel

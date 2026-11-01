@@ -9,6 +9,7 @@ import fr.bounci.screentimeroulette.repository.GameRepository
 import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
 import fr.bounci.screentimeroulette.ui.feature.game.GameUiState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,6 +19,8 @@ class GameViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
+
+    val gameStartedEvent: SharedFlow<Unit> = GameRepository.getGameStartedEvent()
 
     init {
         GameRepository.registerListeners()
