@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -99,7 +100,7 @@ fun LobbyScreen(
                 verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
                 Text(
-                    text = "Game PIN",
+                    text = stringResource(R.string.game_pin_title),
                     style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -166,7 +167,7 @@ fun LobbyScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Show QR",
+                            text = stringResource(R.string.show_qr_label),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                             softWrap = false
@@ -190,7 +191,7 @@ fun LobbyScreen(
             ) {
                 Column {
                     Text(
-                        text = "Players",
+                        text = stringResource(R.string.players_headline),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Start,
@@ -251,7 +252,7 @@ fun LobbyScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Launch",
+                            text = stringResource(R.string.launch_label),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                             softWrap = false

@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">ScreenTimeRoulette</string>
+    <string name="app_name">Screen Time Roulette</string>
+    <string name="username_textfield_placeholder">Username…</string>
+    <string name="create_button">+ Create</string>
+    <string name="join_button">+ Join</string>
+
+    <string name="game_pin_title">Game PIN</string>
+    <string name="show_qr_label">Show QR</string>
+    <string name="players_headline">Players</string>
+    <string name="launch_label">Launch</string>
+
+    <string name="join_title">Join</string>
+    <string name="roomId_placeholder">Room Id…</string>
+    <string name="scan_qr_label">Scan QR</string>
+
+    <string name="unknown_value">unknown</string>
+    <string name="points_format">%1$d pts</string>
+    <string name="time_seconds">%1$ds</string>
+    <string name="button_home">Home</string>
+    <string name="button_play_again">Play Again</string>
+
+    <string name="guess_title">Guess !</string>
+    <string name="guess_app_label">App</string>
+    <string name="guess_screen_time_label">Screen Time</string>
+    <string name="guess_opened_format">Opened : %1$d</string>
+
+    <string name="time_hours_minutes">%1$dh %2$dm</string>
+    <string name="time_minutes">%1$dm</string>
+
+    <string name="leaderboard_title">Leaderboard</string>
+
+    <string name="final_winner_label">Winner</string>
 </resources>

@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -71,12 +72,12 @@ fun FinalLeaderboardView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Winner",
+                text = stringResource(R.string.final_winner_label),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White
             )
             Text(
-                text = winner?.pseudo ?: "???",
+                text = winner?.pseudo ?: stringResource(R.string.unknown_value),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.secondary,
             )
@@ -160,24 +161,32 @@ fun FinalLeaderboardView(
                 onClick = onHomeClick,
                 modifier = Modifier
                     .weight(1f)
-                    .height(75.dp),
+                    .height(75.dp)
+                    .dropShadow(
+                        shape = RoundedCornerShape(25.dp),
+                        shadow = Shadow(radius = 8.dp, color = Color.Black.copy(alpha = 0.3f), offset = DpOffset(2.dp, 4.dp))
+                    ),
                 shape = RoundedCornerShape(25.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 contentPadding = PaddingValues(horizontal = 8.dp)
             ) {
-                Text("Home", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground, softWrap = false)
+                Text(stringResource(R.string.button_home), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground, softWrap = false)
             }
 
             Button(
                 onClick = onPlayAgainClick,
                 modifier = Modifier
                     .weight(1f)
-                    .height(75.dp),
+                    .height(75.dp)
+                    .dropShadow(
+                        shape = RoundedCornerShape(25.dp),
+                        shadow = Shadow(radius = 8.dp, color = Color.Black.copy(alpha = 0.3f), offset = DpOffset(2.dp, 4.dp))
+                    ),
                 shape = RoundedCornerShape(25.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                 contentPadding = PaddingValues(horizontal = 8.dp)
             ) {
-                Text("Play Again", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground, softWrap = false)
+                Text(stringResource(R.string.button_play_again), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onBackground, softWrap = false)
             }
         }
     }

@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -92,7 +93,7 @@ fun JoinScreen(
                 }
             }
             Text(
-                text = "Join",
+                text = stringResource(R.string.join_title),
                 style = MaterialTheme.typography.headlineLarge,
                 textAlign = TextAlign.Center,
             )
@@ -133,7 +134,7 @@ fun JoinScreen(
                         onValueChange = { roomCode = it },
                         placeholder = {
                             Text(
-                                text = "Room Id...",
+                                text = stringResource(R.string.roomId_placeholder),
                                 color = MaterialTheme.colorScheme.background,
                                 style = MaterialTheme.typography.labelSmall,
                             )
@@ -199,7 +200,7 @@ fun JoinScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Scan QR",
+                            text = stringResource(R.string.scan_qr_label),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                             softWrap = false

@@ -27,10 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import fr.bounci.screentimeroulette.R
 import fr.bounci.screentimeroulette.domain.data.AppUsage
 import fr.bounci.screentimeroulette.domain.data.PlayerToVote
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
@@ -59,7 +61,7 @@ fun GuessView(
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(
-            text = "Guess !",
+            text = stringResource(R.string.guess_title),
             style = MaterialTheme.typography.headlineMedium,
             color = Color.White,
             modifier = Modifier.padding(bottom = 32.dp)
@@ -86,12 +88,12 @@ fun GuessView(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "App",
+                text = stringResource(R.string.guess_app_label),
                 style = MaterialTheme.typography.titleSmall,
                 color = Color.White
             )
             Text(
-                text = appUsage?.name ?: "???",
+                text = appUsage?.name ?: stringResource(R.string.unknown_value),
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.secondary,
             )
@@ -99,7 +101,7 @@ fun GuessView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Screen Time",
+                text = stringResource(R.string.guess_screen_time_label),
                 style = MaterialTheme.typography.titleSmall,
                 color = Color.White
             )
@@ -107,8 +109,11 @@ fun GuessView(
             val totalMinutes = appUsage?.timeInMinutes ?: 0
             val hours = totalMinutes / 60
             val minutes = totalMinutes % 60
-            val formattedTime = if (hours > 0) "${hours}h ${minutes}m" else "${minutes}m"
-
+            val formattedTime = if (hours > 0) {
+                stringResource(R.string.time_hours_minutes, hours, minutes)
+            } else {
+                stringResource(R.string.time_minutes, minutes)
+            }
             Text(
                 text = formattedTime,
                 style = MaterialTheme.typography.displayLarge,
@@ -118,14 +123,14 @@ fun GuessView(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Openned : ${appUsage?.opens ?: 0}",
+                text = stringResource(R.string.guess_opened_format, appUsage?.opens ?: 0),
                 style = MaterialTheme.typography.titleSmall,
                 color = Color.White
             )
         }
 
         Text(
-            text = "${timeRemaining}s",
+            text = stringResource(R.string.time_seconds, timeRemaining),
             style = MaterialTheme.typography.headlineLarge,
             color = Color.White,
         )

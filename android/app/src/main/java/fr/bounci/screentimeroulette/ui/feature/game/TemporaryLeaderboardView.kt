@@ -24,9 +24,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fr.bounci.screentimeroulette.R
 import fr.bounci.screentimeroulette.domain.data.Player
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
@@ -42,7 +44,7 @@ fun TemporaryLeaderboardView(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Leaderboard",
+            text = stringResource(R.string.leaderboard_title),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
@@ -61,7 +63,7 @@ fun TemporaryLeaderboardView(
         }
 
         Text(
-            text = "${timeRemaining}s",
+            text = stringResource(R.string.time_seconds, timeRemaining),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
@@ -119,7 +121,7 @@ fun LeaderboardItem(rank: Int, player: Player) {
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "${player.score} pts",
+            text = stringResource(R.string.points_format, player.score),
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White.copy(alpha = 0.7f)
         )

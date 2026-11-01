@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -73,7 +74,7 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(50.dp),
                 ){
                     Text(
-                        text = "Screen Time Roulette",
+                        text = stringResource(R.string.app_name),
                         style = MaterialTheme.typography.displayLarge,
                         textAlign = TextAlign.Center,
                     )
@@ -101,7 +102,7 @@ fun HomeScreen(
                                 ),
                             placeholder = {
                                 Text(
-                                    text = "Username...",
+                                    text = stringResource(R.string.username_textfield_placeholder),
                                     color = MaterialTheme.colorScheme.background,
                                     style = MaterialTheme.typography.labelSmall,
                                 )
@@ -145,7 +146,7 @@ fun HomeScreen(
                                 )
                             ) {
                                 Text(
-                                    text = "+ Create",
+                                    text = stringResource(R.string.create_button),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     softWrap = false
@@ -171,7 +172,7 @@ fun HomeScreen(
                                 )
                             ) {
                                 Text(
-                                    text = "+ Join",
+                                    text = stringResource(R.string.join_button),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onBackground,
                                     softWrap = false
