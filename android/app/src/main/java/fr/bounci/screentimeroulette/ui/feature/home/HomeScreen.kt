@@ -43,10 +43,11 @@ import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
 @Composable
 fun HomeScreen(
+    savedUsername: String,
     onCreateClick: (String) -> Unit,
     onJoinClick: (String) -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf(savedUsername) }
 
     Box(
         modifier = Modifier
@@ -231,6 +232,7 @@ fun HomeScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             HomeScreen(
+                savedUsername = "",
                 onCreateClick = {},
                 onJoinClick = {}
             )

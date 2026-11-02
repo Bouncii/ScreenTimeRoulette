@@ -1,11 +1,14 @@
 package fr.bounci.screentimeroulette.ui.session
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.bounci.screentimeroulette.domain.data.AppUsage
 import fr.bounci.screentimeroulette.domain.usecase.CreateRoom
 import fr.bounci.screentimeroulette.domain.usecase.JoinRoom
 import fr.bounci.screentimeroulette.repository.GameRepository
+import fr.bounci.screentimeroulette.repository.UserRepository
 import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
 import fr.bounci.screentimeroulette.ui.feature.game.GameUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,18 +18,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GameViewModel : ViewModel() {
+class GameViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val userRepository = UserRepository(application)
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     val gameStartedEvent: SharedFlow<Unit> = GameRepository.getGameStartedEvent()
 
     init {
+        val savedName = userRepository.getUsername()
+        if (savedName.isNotBlank()) {
+            _uiState.update { it.copy(username = savedName) }
+        }
         GameRepository.registerListeners()
         observeRepository()
     }
-
+    fun saveCurrentUsername() {
+        userRepository.saveUsername(_uiState.value.username)
+    }
     fun updateUsername(name: String) {
         _uiState.update { it.copy(username = name) }
     }

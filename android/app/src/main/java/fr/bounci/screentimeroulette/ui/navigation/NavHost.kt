@@ -28,8 +28,11 @@ fun NavHost(
             // Home
             entry<Destination.Home> {
                 HomeScreen(
+                    savedUsername = uiState.username,
                     onCreateClick = { username ->
                         gameViewModel.updateUsername(username)
+                        gameViewModel.saveCurrentUsername()
+
                         gameViewModel.createRoom(
                             screenData = listOf(
                                 AppUsage(name = "Instagram", timeInMinutes = 120, opens = 45),
