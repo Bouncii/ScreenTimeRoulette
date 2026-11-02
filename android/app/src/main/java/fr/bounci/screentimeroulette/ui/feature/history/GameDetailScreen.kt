@@ -83,8 +83,7 @@ fun GameDetailScreen(
                 )
             }
         }
-
-        // Titre
+        
         Text(
             text = stringResource(R.string.match_detail_title),
             style = MaterialTheme.typography.displayMedium,
