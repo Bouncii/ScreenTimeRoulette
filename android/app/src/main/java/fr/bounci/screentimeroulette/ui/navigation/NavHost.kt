@@ -46,6 +46,7 @@ fun NavHost(
                     },
                     onJoinClick = { username ->
                         gameViewModel.updateUsername(username)
+                        gameViewModel.saveCurrentUsername()
                         backStack.add(Destination.Join)
                     }
                 )
