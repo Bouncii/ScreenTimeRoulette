@@ -34,10 +34,10 @@ val Typography = Typography(
 
     bodyLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 25.sp, lineHeight = 24.sp),
     bodyMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 20.sp, lineHeight = 20.sp),
-    bodySmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 12.sp, lineHeight = 16.sp),
+    bodySmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Normal, fontSize = 15.sp, lineHeight = 20.sp),
 
 
-    labelLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 75.sp, lineHeight = 25.sp),
+    labelLarge = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 55.sp, lineHeight = 25.sp),
     labelMedium = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 40.sp, lineHeight = 25.sp),
     labelSmall = TextStyle(fontFamily = Fredoka, fontWeight = FontWeight.Medium, fontSize = 30.sp, lineHeight = 16.sp)
 )

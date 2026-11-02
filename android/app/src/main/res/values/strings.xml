@@ -4,6 +4,18 @@
     <string name="create_button">+ Create</string>
     <string name="join_button">+ Join</string>
 
+    <string name="history_title">History</string>
+    <string name="history_winner_format">Winner: %1$s</string>
+    <string name="history_match_info_format">%1$d Players - %2$d Rounds</string>
+    <string name="history_see_details">See Details ></string>
+
+    <string name="match_detail_title">Match Detail</string>
+    <string name="match_detail_round_title">Round %1$d : %2$s</string>
+    <string name="match_detail_app_stats">(%1$s, %2$d Opened)</string>
+    <string name="match_detail_guessed">(guessed : %1$s)</string>
+    <string name="match_detail_points">+ %1$d pts</string>
+    <string name="match_detail_correct_choice">Correct choice : %1$s</string>
+
     <string name="game_pin_title">Game PIN</string>
     <string name="show_qr_label">Show QR</string>
     <string name="players_headline">Players</string>

@@ -125,6 +125,7 @@ fun LobbyScreen(
                 ) {
                     Text(
                         text = roomCode,
+                        softWrap = false,
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -295,7 +296,7 @@ fun LobbyScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             LobbyScreen(
-                roomCode = "584325",
+                roomCode = "M34L8K",
                 players = listOf(
                     Player("1", "Luluvroumette", isHost = true),
                     Player("2", "Th3_Warrior"),
