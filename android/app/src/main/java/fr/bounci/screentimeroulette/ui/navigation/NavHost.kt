@@ -34,11 +34,6 @@ fun NavHost(
                         gameViewModel.saveCurrentUsername()
 
                         gameViewModel.createRoom(
-                            screenData = listOf(
-                                AppUsage(name = "Instagram", timeInMinutes = 120, opens = 45),
-                                AppUsage(name = "TikTok", timeInMinutes = 90, opens = 30),
-                                AppUsage(name = "YouTube", timeInMinutes = 60, opens = 15)
-                            ),
                             onSuccess = { code ->
                                 backStack.add(Destination.Lobby(code))
                             }
@@ -59,9 +54,6 @@ fun NavHost(
                     onJoinRoomSuccess = { code ->
                         gameViewModel.joinRoom(
                             code = code,
-                            screenData = listOf(
-                                AppUsage(name = "Instagram", timeInMinutes = 120, opens = 45)
-                            ),
                             onSuccess = { backStack.add(Destination.Lobby(code)) }
                         )
                     },

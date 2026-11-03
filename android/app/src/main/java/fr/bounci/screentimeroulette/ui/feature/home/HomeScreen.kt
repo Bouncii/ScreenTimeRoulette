@@ -1,4 +1,8 @@
 package fr.bounci.screentimeroulette.ui.feature.home
+import android.annotation.SuppressLint
+import android.app.AppOpsManager
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import fr.bounci.screentimeroulette.R
 
@@ -39,8 +43,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import android.os.Build
+import android.os.Process
+import android.provider.Settings
+import androidx.compose.ui.platform.LocalContext
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
+@SuppressLint("NewApi", "deprecation")
+fun hasUsageStatsPermission(context: Context): Boolean {
+    val appOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+    // Gère plusieurs version d'API android
+    val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+    } else {
+        appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.packageName)
+    }
+    return mode == AppOpsManager.MODE_ALLOWED
+}
 @Composable
 fun HomeScreen(
     savedUsername: String,
@@ -48,7 +67,8 @@ fun HomeScreen(
     onJoinClick: (String) -> Unit
 ) {
     var username by remember { mutableStateOf(savedUsername) }
-
+    val context = LocalContext.current
+    var hasPermission = remember { hasUsageStatsPermission(context) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -128,57 +148,72 @@ fun HomeScreen(
                             horizontalArrangement = Arrangement.spacedBy(20.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Button(
-                                onClick = {onCreateClick(username)},
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(70.dp)
-                                    .dropShadow(
-                                        shape = RoundedCornerShape(50.dp),
-                                        shadow = Shadow(
-                                            radius = 4.dp,
-                                            color = Color.Black.copy(alpha = 0.25f),
-                                            offset = DpOffset(0.dp, 4.dp)
-                                        )
-                                    ),
-                                shape = RoundedCornerShape(50.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.tertiary
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.create_button),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    softWrap = false
-                                )
-                            }
+                                Button(
+                                    onClick = {
+                                        if(hasPermission || hasUsageStatsPermission(context)) {
+                                            hasPermission = true
+                                            onCreateClick(username)
+                                        }
+                                        else
+                                            context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                                    },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(70.dp)
+                                        .dropShadow(
+                                            shape = RoundedCornerShape(50.dp),
+                                            shadow = Shadow(
+                                                radius = 4.dp,
+                                                color = Color.Black.copy(alpha = 0.25f),
+                                                offset = DpOffset(0.dp, 4.dp)
+                                            )
+                                        ),
+                                    shape = RoundedCornerShape(50.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.tertiary
+                                    )
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.create_button),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        softWrap = false
+                                    )
+                                }
 
-                            Button(
-                                onClick = {onJoinClick(username)},
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(70.dp)
-                                    .dropShadow(
-                                        shape = RoundedCornerShape(50.dp),
-                                        shadow = Shadow(
-                                            radius = 4.dp,
-                                            color = Color.Black.copy(alpha = 0.25f),
-                                            offset = DpOffset(0.dp, 4.dp)
-                                        )
-                                    ),
-                                shape = RoundedCornerShape(50.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.join_button),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    softWrap = false
-                                )
-                            }
+                                Button(
+                                    onClick = {
+                                        if(hasPermission || hasUsageStatsPermission(context))
+                                        {
+                                            hasPermission = true
+                                            onJoinClick(username)
+                                        }
+                                        else
+                                            context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+                                    },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .height(70.dp)
+                                        .dropShadow(
+                                            shape = RoundedCornerShape(50.dp),
+                                            shadow = Shadow(
+                                                radius = 4.dp,
+                                                color = Color.Black.copy(alpha = 0.25f),
+                                                offset = DpOffset(0.dp, 4.dp)
+                                            )
+                                        ),
+                                    shape = RoundedCornerShape(50.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary
+                                    )
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.join_button),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        softWrap = false
+                                    )
+                                }
                         }
                     }
                 }

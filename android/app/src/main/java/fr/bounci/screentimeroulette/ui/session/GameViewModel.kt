@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import fr.bounci.screentimeroulette.domain.data.AppUsage
 import fr.bounci.screentimeroulette.domain.usecase.CreateRoom
 import fr.bounci.screentimeroulette.domain.usecase.JoinRoom
+import fr.bounci.screentimeroulette.repository.AppUsageRepository
 import fr.bounci.screentimeroulette.repository.GameRepository
 import fr.bounci.screentimeroulette.repository.UserRepository
 import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userRepository = UserRepository(application)
+    private val appUsageRepo = AppUsageRepository(application)
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
@@ -41,11 +43,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.update { it.copy(username = name) }
     }
 
-    fun createRoom(screenData: List<AppUsage>, onSuccess: (String) -> Unit) {
+    fun createRoom(onSuccess: (String) -> Unit) {
         val currentName = _uiState.value.username
         CreateRoom(
             pseudo = currentName,
-            screenData = screenData,
+            screenData = appUsageRepo.get5AppsWithMostTimeSpend(),
             onSuccess = { code ->
                 _uiState.update { it.copy(roomCode = code, isHost = true) }
                 onSuccess(code)
@@ -54,12 +56,12 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
-    fun joinRoom(code: String, screenData: List<AppUsage>, onSuccess: () -> Unit) {
+    fun joinRoom(code: String, onSuccess: () -> Unit) {
         val currentName = _uiState.value.username
         JoinRoom(
             roomCode = code,
             pseudo = currentName,
-            screenData = screenData,
+            screenData = appUsageRepo.get5AppsWithMostTimeSpend(),
             onSuccess = {
                 _uiState.update { it.copy(roomCode = code, isHost = false) }
                 onSuccess()
