@@ -12,12 +12,15 @@ import fr.bounci.screentimeroulette.repository.GameRepository
 import fr.bounci.screentimeroulette.repository.UserRepository
 import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
 import fr.bounci.screentimeroulette.ui.feature.game.GameUiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class GameViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,6 +30,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     val gameStartedEvent: SharedFlow<Unit> = GameRepository.getGameStartedEvent()
+
+    private var timerJob: Job? = null
 
     init {
         val savedName = userRepository.getUsername()
@@ -87,6 +92,20 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
+    private fun startTimer(duration: Int) {
+        timerJob?.cancel()
+        _uiState.update { it.copy(timeRemaining = duration) }
+
+        timerJob = viewModelScope.launch {
+            var timeLeft = duration
+            while (timeLeft > 0) {
+                delay(1000.milliseconds)
+                timeLeft -= 1
+                _uiState.update{it.copy(timeRemaining = timeLeft)}
+            }
+        }
+    }
+
     private fun observeRepository() {
         viewModelScope.launch {
             GameRepository.getPlayers().collect { newPlayers ->
@@ -109,6 +128,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                             hasVoted = false
                         )
                     }
+                    startTimer(round.duration)
                 }
             }
         }
@@ -117,6 +137,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             GameRepository.getRoundResult().collect { result ->
                 if (result != null) {
+                    timerJob?.cancel()
                     _uiState.update {
                         it.copy(
                             currentPhase = GamePhase.ROUND_LEADERBOARD,
