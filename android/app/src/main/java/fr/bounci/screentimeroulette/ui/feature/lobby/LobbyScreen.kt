@@ -1,12 +1,14 @@
 package fr.bounci.screentimeroulette.ui.feature.lobby
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,10 +29,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.painterResource
@@ -40,6 +47,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import fr.bounci.screentimeroulette.R
 import fr.bounci.screentimeroulette.domain.data.Player
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
@@ -54,6 +62,8 @@ fun LobbyScreen(
     onSettingsClick: () -> Unit = {}
 ) {
     val clipboardManager = LocalClipboardManager.current
+    var showQr by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -147,7 +157,7 @@ fun LobbyScreen(
                 }
 
                 Button(
-                    onClick = {},
+                    onClick = {showQr = true},
                     modifier = Modifier
                         .height(70.dp)
                         .fillMaxWidth()
@@ -282,6 +292,29 @@ fun LobbyScreen(
                         .fillMaxWidth()
                         .height(90.dp),
                 )
+            }
+        }
+    }
+    if (showQr) {
+        Dialog(onDismissRequest = { showQr = false }) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = Color.White,
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val qrBitmap = remember(roomCode) { generateQrCode(roomCode) }
+                    if (qrBitmap != null) {
+                        Image(
+                            bitmap = qrBitmap.asImageBitmap(),
+                            contentDescription = "QR Code",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                        )
+                    }
+                }
             }
         }
     }
