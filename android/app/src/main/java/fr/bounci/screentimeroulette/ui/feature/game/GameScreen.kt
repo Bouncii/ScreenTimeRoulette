@@ -38,7 +38,7 @@ fun GameScreen(
                 state.lastRoundResult?.let { roundEnd ->
                     TemporaryLeaderboardView(
                         leaderboard = roundEnd.leaderboard,
-                        timeRemaining = 5
+                        timeRemaining = state.timeRemaining
                     )
                 }
             }

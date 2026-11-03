@@ -144,6 +144,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                             lastRoundResult = result
                         )
                     }
+                    startTimer(8)
                 }
             }
         }
