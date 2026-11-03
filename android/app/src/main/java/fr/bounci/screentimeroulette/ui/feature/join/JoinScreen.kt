@@ -1,6 +1,7 @@
 package fr.bounci.screentimeroulette.ui.feature.join
 
 import android.content.res.Configuration
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
 import fr.bounci.screentimeroulette.R
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
 
@@ -49,6 +52,12 @@ fun JoinScreen(
     onBackClick: () -> Unit,
 ) {
     var roomCode by remember { mutableStateOf("") }
+
+    val barcodeLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
+        if (result.contents != null) {
+            roomCode = result.contents.trim().uppercase()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -175,7 +184,14 @@ fun JoinScreen(
                 }
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                        val options = ScanOptions().apply {
+                            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                            setBeepEnabled(false)
+                            setOrientationLocked(true)
+                        }
+                        barcodeLauncher.launch(options)
+                    },
                     modifier = Modifier
                         .height(70.dp)
                         .fillMaxWidth()
