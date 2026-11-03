@@ -96,6 +96,7 @@ fun GuessView(
                 text = appUsage?.name ?: stringResource(R.string.unknown_value),
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.secondary,
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -184,7 +185,7 @@ fun GuessViewPreview() {
     ScreenTimeRouletteTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             GuessView(
-                appUsage = AppUsage("Instagram", 1238, 38), // 1238 min = 20h 38m
+                appUsage = AppUsage("Screen Time Roulette", 1238, 38),
                 candidates = listOf(
                     PlayerToVote("1", "Bounci"),
                     PlayerToVote("2", "Synnfall"),

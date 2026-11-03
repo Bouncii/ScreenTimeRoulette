@@ -13,7 +13,8 @@ import fr.bounci.screentimeroulette.ui.session.GameViewModel
 @Composable
 fun GameScreen(
     viewModel: GameViewModel,
-    onHomeClick: () -> Unit
+    onHomeClick: () -> Unit,
+    onPlayAgainClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -46,9 +47,7 @@ fun GameScreen(
                     FinalLeaderboardView(
                         podium = gameEnd.podium,
                         onHomeClick = onHomeClick,
-                        onPlayAgainClick = {
-                            // TODO
-                        }
+                        onPlayAgainClick = onPlayAgainClick
                     )
                 }
             }

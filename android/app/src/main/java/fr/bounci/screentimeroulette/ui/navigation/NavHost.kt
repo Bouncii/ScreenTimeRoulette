@@ -7,7 +7,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import fr.bounci.screentimeroulette.domain.data.AppUsage
 import fr.bounci.screentimeroulette.ui.feature.game.GameScreen
 import fr.bounci.screentimeroulette.ui.feature.home.HomeScreen
 import fr.bounci.screentimeroulette.ui.feature.join.JoinScreen
@@ -65,7 +64,6 @@ fun NavHost(
 
             // Lobby
             entry<Destination.Lobby> { destination ->
-
                 androidx.compose.runtime.LaunchedEffect(destination.roomCode) {
                     gameViewModel.gameStartedEvent.collect {
                         // Si on reçois le signal gameStarted on change d'entry
@@ -79,10 +77,9 @@ fun NavHost(
                     isHost = uiState.isHost,
                     onGameStart = {
                         gameViewModel.launchGame()
-                        //backStack.add(Destination.Game(destination.roomCode))
                     },
                     onBackClick = {
-                        // TODO: ajouter leaveroom avec le viewmodel
+                        gameViewModel.resetState()
                         backStack.removeLastOrNull()
                     }
                 )
@@ -96,6 +93,9 @@ fun NavHost(
                         backStack.clear()
                         backStack.add(Destination.Home)
                         gameViewModel.resetState()
+                    },
+                    onPlayAgainClick = {
+                        backStack.removeLastOrNull()
                     }
                 )
             }
