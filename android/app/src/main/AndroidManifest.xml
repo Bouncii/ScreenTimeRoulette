@@ -5,6 +5,14 @@
         android:name="android.hardware.camera"
         android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
+    <queries> <!-- Ces lignes servent a enlever la restriction des visibilité et ainsi voir toutes les app -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
     <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:allowBackup="true"
