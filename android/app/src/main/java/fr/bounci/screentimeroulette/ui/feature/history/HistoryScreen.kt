@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,22 +40,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import fr.bounci.screentimeroulette.R
+import fr.bounci.screentimeroulette.domain.data.GameEnd
+import fr.bounci.screentimeroulette.domain.data.Player
+import fr.bounci.screentimeroulette.domain.data.PodiumData
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
-
-data class GameHistoryUiModel(
-    val id: String,
-    val dateString: String,
-    val winnerName: String,
-    val playerCount: Int,
-    val roundCount: Int
-)
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HistoryScreen(
-    historyList: List<GameHistoryUiModel>,
+    historyList: List<PodiumData>,
     onBackClick: () -> Unit,
     onSettingsClick: () -> Unit,
-    onMatchClick: (String) -> Unit
+    onMatchClick: (roomId: String, timeString: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -108,10 +107,10 @@ fun HistoryScreen(
             contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(historyList, key = { it.id }) { item ->
+            items(historyList, key = { it.timeString }) { item ->
                 HistoryCard(
                     item = item,
-                    onClick = { onMatchClick(item.id) }
+                    onClick = {onMatchClick(item.gameEnd.roomId, item.timeString)}
                 )
             }
         }
@@ -120,9 +119,17 @@ fun HistoryScreen(
 
 @Composable
 fun HistoryCard(
-    item: GameHistoryUiModel,
+    item: PodiumData,
     onClick: () -> Unit
 ) {
+    val winnerName = item.gameEnd.podium.firstOrNull()?.pseudo ?: stringResource(id = R.string.unknown_value)
+    val playerCount = item.gameEnd.podium.size
+    val roundCount = item.gameEnd.totalRounds
+
+    val dateString = remember(item.timeString) {
+        SimpleDateFormat("MMM dd, yyyy - HH:mm", Locale.getDefault()).format(Date(item.timeString))
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,11 +148,10 @@ fun HistoryCard(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
-                text = item.dateString,
+                text = dateString,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
-
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -157,13 +163,12 @@ fun HistoryCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(R.string.history_winner_format, item.winnerName),
+                    text = stringResource(R.string.history_winner_format, winnerName),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     fontWeight = FontWeight.Medium
                 )
             }
-
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -171,7 +176,7 @@ fun HistoryCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.history_match_info_format, item.playerCount, item.roundCount),
+                    text = stringResource(R.string.history_match_info_format, playerCount, roundCount),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
@@ -191,20 +196,28 @@ fun HistoryCard(
 fun HistoryScreenPreview() {
     ScreenTimeRouletteTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
+            val mockPlayer1 = Player("1", "Synnfall", 2500)
+            val mockPlayer2 = Player("2", "Luluvroumette", 1800)
+            val mockPlayer3 = Player("3", "Sipera", 950)
+            val mockPlayer4 = Player("4", "Lasnelus", 0)
+
+            val mockGameEnd = GameEnd(
+                roomId = "X7B9Q2",
+                totalRounds = 5,
+                podium = listOf(mockPlayer1, mockPlayer2, mockPlayer3, mockPlayer4)
+            )
+
             val mockData = listOf(
-                GameHistoryUiModel("1", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5),
-                GameHistoryUiModel("2", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5),
-                GameHistoryUiModel("3", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5),
-                GameHistoryUiModel("4", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5),
-                GameHistoryUiModel("5", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5),
-                GameHistoryUiModel("6", "Oct 24, 2026 - 18:32", "Synnfall", 4, 5)
+                PodiumData(timeString = 1792773120000L, gameEnd = mockGameEnd),
+                PodiumData(timeString = 1792773120000L + 86400000L, gameEnd = mockGameEnd),
+                PodiumData(timeString = 1792773120000L + 86400000L * 2, gameEnd = mockGameEnd)
             )
 
             HistoryScreen(
                 historyList = mockData,
                 onBackClick = {},
                 onSettingsClick = {},
-                onMatchClick = {}
+                onMatchClick = { _, _ -> }
             )
         }
     }

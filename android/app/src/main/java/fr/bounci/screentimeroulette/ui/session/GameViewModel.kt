@@ -5,10 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.bounci.screentimeroulette.domain.data.AppUsage
+import fr.bounci.screentimeroulette.domain.data.PodiumData
 import fr.bounci.screentimeroulette.domain.usecase.CreateRoom
 import fr.bounci.screentimeroulette.domain.usecase.JoinRoom
 import fr.bounci.screentimeroulette.repository.AppUsageRepository
 import fr.bounci.screentimeroulette.repository.GameRepository
+import fr.bounci.screentimeroulette.repository.PodiumRepository
 import fr.bounci.screentimeroulette.repository.UserRepository
 import fr.bounci.screentimeroulette.ui.feature.game.GamePhase
 import fr.bounci.screentimeroulette.ui.feature.game.GameUiState
@@ -16,10 +18,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.collections.emptyList
 import kotlin.time.Duration.Companion.milliseconds
 
 class GameViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,6 +35,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     val gameStartedEvent: SharedFlow<Unit> = GameRepository.getGameStartedEvent()
+
+    val historyList: StateFlow<List<PodiumData>> = PodiumRepository.getPodiums()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
     private var timerJob: Job? = null
 

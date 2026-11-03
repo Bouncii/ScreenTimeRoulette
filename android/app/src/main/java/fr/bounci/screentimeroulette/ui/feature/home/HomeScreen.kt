@@ -66,7 +66,8 @@ fun hasUsageStatsPermission(context: Context): Boolean {
 fun HomeScreen(
     savedUsername: String,
     onCreateClick: (String) -> Unit,
-    onJoinClick: (String) -> Unit
+    onJoinClick: (String) -> Unit,
+    onHistoryClick: () -> Unit
 ) {
     var username by remember { mutableStateOf(savedUsername) }
     val context = LocalContext.current
@@ -241,8 +242,7 @@ fun HomeScreen(
                     }
 
                     IconButton(
-                        onClick = {
-                        },
+                        onClick = onHistoryClick,
                         modifier = Modifier.size(80.dp)
                     ) {
                         Icon(
@@ -271,7 +271,8 @@ fun HomeScreenPreview() {
             HomeScreen(
                 savedUsername = "",
                 onCreateClick = {},
-                onJoinClick = {}
+                onJoinClick = {},
+                onHistoryClick = {},
             )
         }
     }

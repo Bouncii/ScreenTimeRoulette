@@ -16,4 +16,9 @@ interface Destination : NavKey {
 
     @Serializable
     data class Game(val roomCode: String) : Destination
+    @Serializable
+    data object History : Destination
+
+    @Serializable
+    data class GameDetail(val roomId: String, val timeString: Long) : Destination
 }

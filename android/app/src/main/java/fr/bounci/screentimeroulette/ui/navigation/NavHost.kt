@@ -9,9 +9,12 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import fr.bounci.screentimeroulette.ui.feature.game.GameScreen
 import fr.bounci.screentimeroulette.ui.feature.home.HomeScreen
+import fr.bounci.screentimeroulette.ui.feature.history.HistoryScreen
+import fr.bounci.screentimeroulette.ui.feature.history.GameDetailScreen
 import fr.bounci.screentimeroulette.ui.feature.join.JoinScreen
 import fr.bounci.screentimeroulette.ui.feature.lobby.LobbyScreen
 import fr.bounci.screentimeroulette.ui.session.GameViewModel
+
 
 @Composable
 fun NavHost(
@@ -42,6 +45,9 @@ fun NavHost(
                         gameViewModel.updateUsername(username)
                         gameViewModel.saveCurrentUsername()
                         backStack.add(Destination.Join)
+                    },
+                    onHistoryClick = {
+                        backStack.add(Destination.History)
                     }
                 )
             }
@@ -98,6 +104,39 @@ fun NavHost(
                         backStack.removeLastOrNull()
                     }
                 )
+            }
+
+            entry<Destination.History> {
+                val historyList by gameViewModel.historyList.collectAsState()
+                HistoryScreen(
+                    historyList = historyList,
+                    onBackClick = {
+                        backStack.removeLastOrNull()
+                    },
+                    onSettingsClick = {
+                    },
+                    onMatchClick = { roomId, timeString ->
+                        backStack.add(Destination.GameDetail(roomId, timeString))
+                    }
+                )
+            }
+
+            entry<Destination.GameDetail> { destination ->
+                val historyList by gameViewModel.historyList.collectAsState()
+                val matchDetail = historyList.find {
+                    it.gameEnd.roomId == destination.roomId && it.timeString == destination.timeString
+                }
+
+                if (matchDetail != null) {
+                    GameDetailScreen(
+                        matchDetail = matchDetail,
+                        onBackClick = {
+                            backStack.removeLastOrNull()
+                        },
+                        onSettingsClick = {
+                        }
+                    )
+                }
             }
         }
     )
