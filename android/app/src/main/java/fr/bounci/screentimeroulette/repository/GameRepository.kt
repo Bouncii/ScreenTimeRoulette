@@ -3,6 +3,7 @@ package fr.bounci.screentimeroulette.repository
 import fr.bounci.screentimeroulette.domain.data.AppUsage
 import fr.bounci.screentimeroulette.domain.data.GameEnd
 import fr.bounci.screentimeroulette.domain.data.Player
+import fr.bounci.screentimeroulette.domain.data.PodiumData
 import fr.bounci.screentimeroulette.domain.data.Round
 import fr.bounci.screentimeroulette.domain.data.RoundEnd
 import fr.bounci.screentimeroulette.remote.ApiSocket
@@ -11,23 +12,27 @@ import fr.bounci.screentimeroulette.remote.RemoteCreateRoomPayload
 import fr.bounci.screentimeroulette.remote.RemoteGameEndData
 import fr.bounci.screentimeroulette.remote.RemoteGuessPayload
 import fr.bounci.screentimeroulette.remote.RemoteJoinRoomPayload
-import fr.bounci.screentimeroulette.remote.RemotePlayer
 import fr.bounci.screentimeroulette.remote.RemotePlayerJoinedData
 import fr.bounci.screentimeroulette.remote.RemoteRoundData
 import fr.bounci.screentimeroulette.remote.RemoteRoundEndData
 import fr.bounci.screentimeroulette.remote.RemoteSocketResponse
 import fr.bounci.screentimeroulette.remote.SocketState
 import io.socket.client.Ack
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.json.JSONObject
 
 object GameRepository {
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val jsonParser = Json { ignoreUnknownKeys = true }
     private val players = MutableStateFlow<List<Player>>(emptyList())
     private val currentRound = MutableStateFlow<Round?>(null)
@@ -95,7 +100,12 @@ object GameRepository {
             val jsonString = args.firstOrNull()?.toString() ?: return@on
             try {
                 val remoteData = jsonParser.decodeFromString<RemoteGameEndData>(jsonString)
-                gameEnd.value = remoteData.parse()
+                val gameEndParsed = remoteData.parse()
+                gameEnd.value = gameEndParsed
+
+                scope.launch {
+                    PodiumRepository.savePodium(PodiumData(gameEnd = gameEndParsed))
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

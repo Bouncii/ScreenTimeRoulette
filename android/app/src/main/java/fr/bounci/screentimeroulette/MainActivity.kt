@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import fr.bounci.screentimeroulette.local.PodiumDatabaseHolder
 import fr.bounci.screentimeroulette.remote.ApiSocket
 import fr.bounci.screentimeroulette.ui.navigation.NavHost
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         ApiSocket.connect()
         enableEdgeToEdge()
+        PodiumDatabaseHolder.initialize(applicationContext)
         setContent {
             ScreenTimeRouletteTheme {
                 Surface(

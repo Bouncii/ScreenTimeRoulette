@@ -47,7 +47,9 @@ import android.os.Build
 import android.os.Process
 import android.provider.Settings
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.LaunchedEffect
 import fr.bounci.screentimeroulette.ui.theme.ScreenTimeRouletteTheme
+import fr.bounci.screentimeroulette.repository.PodiumRepository
 
 @SuppressLint("NewApi", "deprecation")
 fun hasUsageStatsPermission(context: Context): Boolean {
